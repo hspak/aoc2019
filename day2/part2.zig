@@ -1,15 +1,9 @@
 const std = @import("std");
 
-var allocator: *std.mem.Allocator = undefined;
-
 const ProgError = error{Finished};
 
 pub fn main() !void {
-    var arena = std.heap.ArenaAllocator.init(std.heap.direct_allocator);
-    defer arena.deinit();
-    allocator = &arena.allocator;
-
-    var file = try std.fs.File.openRead("./input2");
+    var file = try std.fs.File.openRead("./input");
     defer file.close();
     var stream = &file.inStream().stream;
 
@@ -27,7 +21,7 @@ pub fn main() !void {
     while (val1 < 4000) {
         var val2: u32 = 0;
         while (val2 < 4000) {
-            try execute(&prog, counter);
+            _ = execute(&prog, counter);
             if (prog[0] == 19690720) {
                 std.debug.warn("{}{}\n", prog[1], prog[2]);
                 std.os.exit(0);
@@ -42,54 +36,21 @@ pub fn main() !void {
     }
 }
 
-fn execute(prog: *[4096]u32, size: u32) !void {
-    var inst: u32 = undefined;
-    var pos1: u32 = undefined;
-    var pos2: u32 = undefined;
-    var pos_out: u32 = undefined;
-    var result: u32 = undefined;
-    var full = false;
+fn execute(prog: *[4096]u32, size: u32) u32 {
     var counter: u32 = 0;
     while (counter < size) {
-        if (counter % 4 == 0) {
-            if (full) {
-                result = try subtask(prog, inst, pos1, pos2);
-                prog[pos_out] = result;
-                full = false;
-            }
-            inst = prog[counter];
-        } else if (counter % 4 == 1) {
-            pos1 = prog[counter];
-        } else if (counter % 4 == 2) {
-            pos2 = prog[counter];
-        } else if (counter % 4 == 3) {
-            pos_out = prog[counter];
-            full = true;
-        } else {
-            unreachable;
-        }
-        counter += 1;
+        var inst = prog[counter];
+        var pos1 = prog[counter + 1];
+        var pos2 = prog[counter + 2];
+        var pos_out = prog[counter + 3];
+        const result = switch (inst) {
+            1 => prog[pos1] + prog[pos2],
+            2 => prog[pos1] * prog[pos2],
+            99 => return prog[0],
+            else => unreachable,
+        };
+        prog[pos_out] = result;
+        counter += 4;
     }
-}
-
-fn subtask(prog: *[4096]u32, inst: u32, pos1: u32, pos2: u32) !u32 {
-    var result: u32 = undefined;
-    if (inst == 1) {
-        result = prog[pos1] + prog[pos2];
-    } else if (inst == 2) {
-        result = prog[pos1] * prog[pos2];
-    } else if (inst == 99) {
-        return ProgError.Finished;
-    } else {
-        unreachable;
-    }
-    return result;
-}
-
-fn print(prog: [4096]u32, size: u32) void {
-    var i: u32 = 0;
-    while (i < size) {
-        std.debug.warn("{}: {}\n", i, prog[i]);
-        i += 1;
-    }
+    unreachable;
 }
