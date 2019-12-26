@@ -81,7 +81,7 @@ const Grid = struct {
         var i: u8 = 0;
         while (i < 7) {
             if (self.x == self.candidates_x[i] and self.y == self.candidates_y[i]) {
-                std.debug.warn("({}, {}) steps: {}\n", self.x, self.y, self.steps);
+                std.debug.warn("({}, {}) steps: {}\n", .{ self.x, self.y, self.steps });
                 self.candidates_steps[i] = self.steps;
                 break;
             }
@@ -118,7 +118,7 @@ pub fn main() !void {
         }
     }
     var dist = findFastestIntersection(wire1, wire2);
-    std.debug.warn("{}\n", dist);
+    std.debug.warn("{}\n", .{dist});
 }
 
 fn parsePath(wire: *Wire, line: []u8) !void {
@@ -151,7 +151,7 @@ fn findFastestIntersection(wire1: Wire, wire2: Wire) u32 {
     i = 0;
     while (i < 7) {
         var newcomer = grid1.candidates_steps[i] + grid2.candidates_steps[i];
-        std.debug.warn("new {}\n", newcomer);
+        std.debug.warn("new {}\n", .{newcomer});
         if (newcomer < candidate) {
             candidate = newcomer;
         }

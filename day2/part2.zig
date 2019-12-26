@@ -23,7 +23,7 @@ pub fn main() !void {
         while (val2 < 4000) {
             _ = execute(&prog, counter);
             if (prog[0] == 19690720) {
-                std.debug.warn("{}{}\n", prog[1], prog[2]);
+                std.debug.warn("{}{}\n", .{ prog[1], prog[2] });
                 std.os.exit(0);
             }
             std.mem.copy(u32, prog[0..], orig[0..]);

@@ -18,5 +18,5 @@ pub fn main() !void {
             total_fuel += fuel_for_fuel;
         }
     }
-    std.debug.warn("{}\n", total_fuel);
+    std.debug.warn("{}\n", .{total_fuel});
 }

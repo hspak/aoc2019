@@ -17,7 +17,7 @@ pub fn main() !void {
     }
     prog[1] = 12;
     prog[2] = 2;
-    std.debug.warn("{}\n", execute(&prog, counter));
+    std.debug.warn("{}\n", .{execute(&prog, counter)});
 }
 
 fn execute(prog: *[4096]u32, size: u32) u32 {

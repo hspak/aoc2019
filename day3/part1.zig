@@ -69,7 +69,7 @@ const Grid = struct {
     }
 
     fn mark(self: *Grid) void {
-        std.debug.warn("mark: ({}, {})\n", self.x, self.y);
+        std.debug.warn("mark: ({}, {})\n", .{ self.x, self.y });
         self.slots[self.x][self.y] = 1;
     }
 };
@@ -102,7 +102,7 @@ pub fn main() !void {
         }
     }
     var dist = findCentralIntersectionDist(wire1, wire2);
-    std.debug.warn("{}\n", dist);
+    std.debug.warn("{}\n", .{dist});
 }
 
 fn parsePath(wire: *Wire, line: []u8) !void {
@@ -138,7 +138,7 @@ fn findCentralIntersectionDist(wire1: Wire, wire2: Wire) u32 {
         while (y < YLen) {
             if (grid1.slots[x][y] == 1 and grid2.slots[x][y] == 1) {
                 var dist = distFromOrigin(x, y);
-                std.debug.warn("candidate: ({}, {}): {} vs {}\n", x, y, candidate, dist);
+                std.debug.warn("candidate: ({}, {}): {} vs {}\n", .{ x, y, candidate, dist });
                 if (dist < candidate) {
                     candidate = dist;
                 }

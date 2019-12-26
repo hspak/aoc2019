@@ -50,7 +50,7 @@ fn execute(prog: *[4096]isize, size: usize) !void {
             },
             3 => {
                 const stdout = &std.io.getStdOut().outStream().stream;
-                try stdout.print("Input: ");
+                try stdout.print("Input: ", .{});
                 const file = std.io.getStdIn();
                 const stream = &file.inStream().stream;
                 var buf: [16]u8 = undefined;
@@ -64,7 +64,7 @@ fn execute(prog: *[4096]isize, size: usize) !void {
                 pos1 = prog[counter];
                 counter += 1;
                 const stdout = &std.io.getStdOut().outStream().stream;
-                try stdout.print("{}\n", prog[@intCast(usize, pos1)]);
+                try stdout.print("{}\n", .{prog[@intCast(usize, pos1)]});
             },
             5, 6 => {
                 pos1 = prog[counter];
@@ -96,7 +96,7 @@ fn execute(prog: *[4096]isize, size: usize) !void {
             },
             99 => return,
             else => {
-                std.debug.warn("invalid instruction found: {}\n", inst);
+                std.debug.warn("invalid instruction found: {}\n", .{inst.opcode});
                 return error.InvalidInstruction;
             },
         }

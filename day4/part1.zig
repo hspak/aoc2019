@@ -20,7 +20,7 @@ pub fn main() anyerror!void {
             end = try std.fmt.parseInt(usize, trimmed, 10);
         }
     }
-    try out.print("count: {}\n", countPasswords(start, end));
+    try out.print("count: {}\n", .{countPasswords(start, end)});
 }
 
 fn countPasswords(start: usize, end: usize) usize {
